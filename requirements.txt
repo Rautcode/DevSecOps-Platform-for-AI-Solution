@@ -32,7 +32,7 @@ structlog==24.1.0
 # Production Dependencies
 gunicorn==21.2.0
 sqlalchemy==2.0.25
-alembic==1.13.1
+alembic==1.16.2
 redis==5.0.1
 celery==5.3.4
 python-json-logger==2.0.7
