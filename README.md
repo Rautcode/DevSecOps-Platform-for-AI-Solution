@@ -1,11 +1,13 @@
 # DevSecOps Platform for AI Solutions 🚀
 
+[![CI/CD](https://github.com/Rautcode/DevSecOps-Platform-for-AI-Solution/actions/workflows/ci-cd.yml/badge.svg)](https://github.com/Rautcode/DevSecOps-Platform-for-AI-Solution/actions/workflows/ci-cd.yml)
+[![Security Scan](https://github.com/Rautcode/DevSecOps-Platform-for-AI-Solution/actions/workflows/security-scan.yml/badge.svg)](https://github.com/Rautcode/DevSecOps-Platform-for-AI-Solution/actions/workflows/security-scan.yml)
 [![Production Ready](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)]()
 [![Python 3.11+](https://img.shields.io/badge/Python-3.11+-blue)]()
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688)]()
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED)]()
 [![Security](https://img.shields.io/badge/Security-Hardened-red)]()
-[![License](https://img.shields.io/badge/License-MIT-yellow)]()
+[![License](https://img.shields.io/badge/License-MIT-yellow)](https://github.com/Rautcode/DevSecOps-Platform-for-AI-Solution/blob/main/LICENSE)
 
 **Enterprise-Grade DevSecOps Platform for AI/ML Security Management**
 
@@ -263,6 +265,51 @@ locust -f tests/performance/locustfile.py --host=http://localhost:8000
 - **Code Style**: Black formatting + flake8 compliance
 - **Type Safety**: MyPy strict mode compliance
 - **Documentation**: Comprehensive docstrings for all public APIs
+
+## 🔄 CI/CD & Automation
+
+### GitHub Actions Workflows
+The platform includes comprehensive CI/CD pipelines with automated security scanning:
+
+#### **Main CI/CD Pipeline** (`ci-cd.yml`)
+- ✅ **Code Quality**: Black, isort, flake8, mypy checks
+- 🔍 **Security Scanning**: Trivy, Bandit, CodeQL analysis
+- 🧪 **Testing**: Unit tests, integration tests, coverage reporting
+- 🐳 **Container Building**: Multi-platform Docker images
+- 🚀 **Deployment**: Automated staging deployment with validation
+
+#### **Security Scanning** (`security-scan.yml`)
+- 🔐 **Secret Detection**: TruffleHog for credential scanning
+- 📋 **License Compliance**: Automated license validation
+- 🛡️ **Container Security**: Trivy container vulnerability scanning
+- 🏗️ **Infrastructure Scan**: Checkov for IaC security
+- 📊 **SAST Analysis**: Semgrep static analysis
+
+#### **Production Deployment** (`production-deployment.yml`)
+- 🔒 **Pre-deployment Security**: Comprehensive security validation
+- 🚀 **Staging Deployment**: Automated staging environment setup
+- ✅ **Production Validation**: Health checks and smoke tests
+- 🔄 **Rollback Capability**: Automated rollback on failure
+
+#### **Dependency Management** (`dependency-updates.yml`)
+- 🔄 **Automated Updates**: Weekly dependency updates via Dependabot
+- 🔍 **Vulnerability Scanning**: Safety and pip-audit integration
+- ✅ **Auto-merge**: Safe dependency updates automatically merged
+
+### Security Features
+- **Branch Protection**: Required reviews and status checks
+- **Secret Scanning**: GitHub secret scanning enabled
+- **Vulnerability Alerts**: Automated dependency vulnerability notifications
+- **Security Policies**: Comprehensive security issue templates
+- **Compliance Monitoring**: Automated compliance validation
+
+### Development Workflow
+1. **Feature Development**: Create feature branch from `develop`
+2. **Automated Testing**: All commits trigger CI pipeline
+3. **Security Validation**: Automated security scans on every PR
+4. **Code Review**: Required reviews with security checklist
+5. **Staging Deployment**: Automatic deployment to staging on merge
+6. **Production Release**: Manual production deployment with validation
 
 ## 🚀 Deployment Options
 
