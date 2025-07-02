@@ -248,7 +248,7 @@ pytest tests/ -v --cov=src --cov-report=html
 
 # Security testing
 bandit -r src/ -f json -o security-report.json
-safety check --json --output safety-report.json
+pip-audit --format=json --output=pip-audit-report.json
 
 # Code quality checks
 black src/ tests/

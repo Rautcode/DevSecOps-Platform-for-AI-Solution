@@ -10,9 +10,14 @@ fastapi==0.110.0
 uvicorn[standard]==0.27.1
 websockets==12.0
 
+# Pydantic (FastAPI compatible version)
+pydantic==2.6.3
+pydantic-settings==2.2.1
+
 # Security Scanning
 bandit==1.7.5
-safety==3.0.1
+# safety==3.0.1  # Conflicts with pydantic v2, replaced with pip-audit
+pip-audit==2.6.1
 semgrep==1.45.0
 
 # Data Processing & Analytics
@@ -22,8 +27,6 @@ asyncio-mqtt==0.16.1
 
 # Configuration & Environment
 python-dotenv==1.0.1
-pydantic==2.6.3
-pydantic-settings==2.2.1
 
 # Monitoring & Logging
 prometheus-client==0.20.0
