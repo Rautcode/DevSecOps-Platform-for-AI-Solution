@@ -1,0 +1,49 @@
+{
+  "id": "sample_ai_workload",
+  "name": "Sample AI Model for Testing",
+  "type": "machine_learning_model",
+  "model": {
+    "encryption_enabled": true,
+    "access_logging": true,
+    "model_type": "neural_network",
+    "framework": "tensorflow"
+  },
+  "data": {
+    "contains_pii": false,
+    "retention_days": 300,
+    "data_classification": "internal",
+    "anonymization_enabled": true
+  },
+  "container": {
+    "image": "tensorflow/serving:latest",
+    "vulnerability_count": {
+      "critical": 0,
+      "high": 1,
+      "medium": 3,
+      "low": 8
+    },
+    "security_scanning_enabled": true
+  },
+  "network": {
+    "public_access": false,
+    "vpc_isolated": true,
+    "firewall_enabled": true,
+    "allowed_ports": [8080, 8443]
+  },
+  "api": {
+    "authentication_enabled": true,
+    "rate_limiting_enabled": true,
+    "api_versioning": "v1",
+    "swagger_enabled": false
+  },
+  "compliance": {
+    "frameworks": ["SOC2", "ISO27001"],
+    "last_audit": "2025-06-01",
+    "certification_status": "compliant"
+  },
+  "monitoring": {
+    "logging_enabled": true,
+    "metrics_collection": true,
+    "alerting_configured": true
+  }
+}
