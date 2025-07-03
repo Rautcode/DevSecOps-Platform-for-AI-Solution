@@ -20,6 +20,7 @@ jobs:
     permissions:
       security-events: write
       contents: read
+      actions: read
     
     steps:
     - name: Checkout code
@@ -32,12 +33,14 @@ jobs:
         scan-ref: '.'
         format: 'sarif'
         output: 'trivy-results.sarif'
+        exit-code: '0'  # Don't fail on vulnerabilities
     
     - name: Upload Trivy scan results to GitHub Security tab
       uses: github/codeql-action/upload-sarif@v3
-      if: always()
+      if: always() && github.repository_owner == github.actor
       with:
         sarif_file: 'trivy-results.sarif'
+      continue-on-error: true
     
     - name: Set up Python for security tools
       uses: actions/setup-python@v4

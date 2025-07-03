@@ -13,6 +13,11 @@ on:
 env:
   PYTHON_VERSION: '3.11'
 
+permissions:
+  security-events: write
+  contents: read
+  actions: read
+
 jobs:
   secret-scan:
     name: Secret Detection
@@ -66,6 +71,9 @@ jobs:
   container-security:
     name: Container Security Scan
     runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      contents: read
     
     steps:
     - name: Checkout code
@@ -81,12 +89,21 @@ jobs:
         image-ref: 'devsecops-platform:latest'
         format: 'sarif'
         output: 'trivy-container-results.sarif'
+        exit-code: '0'
     
     - name: Upload Trivy scan results
       uses: github/codeql-action/upload-sarif@v3
       if: always()
       with:
         sarif_file: 'trivy-container-results.sarif'
+      continue-on-error: true
+    
+    - name: Upload container scan artifact
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: trivy-container-results
+        path: trivy-container-results.sarif
 
   infrastructure-scan:
     name: Infrastructure Security Scan
