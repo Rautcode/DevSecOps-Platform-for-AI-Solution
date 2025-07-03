@@ -173,7 +173,7 @@ class PolicyEngine:
                 PolicyRule(
                     name="container_vulnerabilities",
                     condition="container.vulnerability_count.critical",
-                    operator="gt",
+                    operator="eq",
                     value=0,
                     description="No critical vulnerabilities in containers"
                 ),
@@ -274,7 +274,8 @@ class PolicyEngine:
         violated_rules = []
         
         for rule in policy.rules:
-            if await self._evaluate_rule(rule, workload_data):
+            # If rule evaluation returns False, it means the rule is violated
+            if not await self._evaluate_rule(rule, workload_data):
                 violated_rules.append(rule.name)
         
         if violated_rules:
