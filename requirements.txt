@@ -13,6 +13,7 @@ websockets==12.0
 # Pydantic (FastAPI compatible version)
 pydantic==2.6.3
 pydantic-settings==2.2.1
+email-validator==2.1.1  # Required for Pydantic email validation
 
 # Security Scanning
 bandit==1.7.5
