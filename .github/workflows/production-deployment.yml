@@ -135,11 +135,14 @@ jobs:
         image-ref: ${{ needs.build-production-image.outputs.image-tag }}
         format: 'sarif'
         output: 'trivy-production.sarif'
+        exit-code: '0'
     
     - name: Upload Trivy scan results
       uses: github/codeql-action/upload-sarif@v3
+      if: always()
       with:
         sarif_file: 'trivy-production.sarif'
+      continue-on-error: true
     
     - name: Check for critical vulnerabilities
       run: |
