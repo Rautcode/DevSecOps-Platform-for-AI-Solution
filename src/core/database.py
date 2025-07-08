@@ -42,14 +42,20 @@ class DatabaseManager:
                 )
             
             # Create async engine
-            self.engine = create_async_engine(
-                database_url,
-                echo=self.db_settings.echo,
-                pool_size=self.db_settings.pool_size,
-                max_overflow=self.db_settings.max_overflow,
-                pool_timeout=self.db_settings.pool_timeout,
-                pool_recycle=self.db_settings.pool_recycle,
-            )
+            engine_kwargs = {
+                "echo": self.db_settings.echo,
+            }
+            
+            # Add pool settings only for databases that support it (not SQLite)
+            if not database_url.startswith("sqlite"):
+                engine_kwargs.update({
+                    "pool_size": self.db_settings.pool_size,
+                    "max_overflow": self.db_settings.max_overflow,
+                    "pool_timeout": self.db_settings.pool_timeout,
+                    "pool_recycle": self.db_settings.pool_recycle,
+                })
+            
+            self.engine = create_async_engine(database_url, **engine_kwargs)
             
             # Create session factory
             self.session_factory = sessionmaker(

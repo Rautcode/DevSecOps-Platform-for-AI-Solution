@@ -104,6 +104,19 @@ class SecuritySettings(BaseSettings):
         if v and len(v.get_secret_value()) < 32:
             raise ValueError('Security keys must be at least 32 characters')
         return v
+    
+    @validator('cors_origins', pre=True)
+    def parse_cors_origins(cls, v):
+        if isinstance(v, str):
+            # Handle JSON string or comma-separated string
+            if v.startswith('[') and v.endswith(']'):
+                import json
+                try:
+                    return json.loads(v)
+                except json.JSONDecodeError:
+                    pass
+            return [origin.strip() for origin in v.split(',')]
+        return v
 
 
 class VaultSettings(BaseSettings):
@@ -215,14 +228,28 @@ class MonitoringSettings(BaseSettings):
 
 class ComplianceSettings(BaseSettings):
     """Compliance framework configuration"""
-    model_config = SettingsConfigDict(extra="ignore")
-    model_config = SettingsConfigDict(env_prefix="COMPLIANCE_")
+    model_config = SettingsConfigDict(
+        env_prefix="COMPLIANCE_",
+        extra="ignore"
+    )
     
     frameworks: List[str] = Field(default=["SOC2", "ISO27001", "GDPR", "HIPAA"])
     audit_retention_days: int = Field(default=2555, ge=365, le=3650)  # 7 years max
     encryption_at_rest: bool = Field(default=True)
     encryption_in_transit: bool = Field(default=True)
     data_residency_regions: List[str] = Field(default=["us-east-1", "eu-west-1"])
+    
+    @validator('frameworks', pre=True)
+    def parse_frameworks(cls, v):
+        if isinstance(v, str):
+            return [f.strip() for f in v.split(',')]
+        return v
+    
+    @validator('data_residency_regions', pre=True)
+    def parse_regions(cls, v):
+        if isinstance(v, str):
+            return [r.strip() for r in v.split(',')]
+        return v
 
 
 class AppSettings(BaseSettings):
@@ -296,6 +323,9 @@ class ProductionSettings(BaseSettings):
     
     # Monitoring settings
     monitoring: MonitoringSettings = Field(default_factory=MonitoringSettings)
+    
+    # Compliance settings
+    compliance: ComplianceSettings = Field(default_factory=ComplianceSettings)
     
     def is_production(self) -> bool:
         """Check if running in production environment"""
