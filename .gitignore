@@ -22,13 +22,25 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# Development and Runtime Files
+# Development Files
 dev_*.py
 dev_*.db
 dev_*.json
 *_health_report.json
-LINKEDIN_POST.md
-FINAL_STATUS_REPORT.md
+*.md
+!README.md
+!LICENSE.md
+
+# IDE and Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/_build/
+docs/site/
 
 # PyInstaller
 *.manifest

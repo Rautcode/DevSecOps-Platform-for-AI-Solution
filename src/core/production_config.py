@@ -8,7 +8,7 @@ import secrets
 from enum import Enum
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Union
-from pydantic import Field, validator, SecretStr
+from pydantic import Field, field_validator, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -99,13 +99,15 @@ class SecuritySettings(BaseSettings):
     tls_cert_path: Optional[Path] = None
     tls_key_path: Optional[Path] = None
     
-    @validator('secret_key', 'encryption_key', 'jwt_secret')
+    @field_validator('secret_key', 'encryption_key', 'jwt_secret')
+    @classmethod
     def validate_keys(cls, v):
         if v and len(v.get_secret_value()) < 32:
             raise ValueError('Security keys must be at least 32 characters')
         return v
     
-    @validator('cors_origins', pre=True)
+    @field_validator('cors_origins', mode='before')
+    @classmethod
     def parse_cors_origins(cls, v):
         if isinstance(v, str):
             # Handle JSON string or comma-separated string
@@ -233,23 +235,19 @@ class ComplianceSettings(BaseSettings):
         extra="ignore"
     )
     
-    frameworks: List[str] = Field(default=["SOC2", "ISO27001", "GDPR", "HIPAA"])
+    frameworks: str = Field(default="SOC2,ISO27001,GDPR,HIPAA")
     audit_retention_days: int = Field(default=2555, ge=365, le=3650)  # 7 years max
     encryption_at_rest: bool = Field(default=True)
     encryption_in_transit: bool = Field(default=True)
-    data_residency_regions: List[str] = Field(default=["us-east-1", "eu-west-1"])
+    data_residency_regions: str = Field(default="us-east-1,eu-west-1")
     
-    @validator('frameworks', pre=True)
-    def parse_frameworks(cls, v):
-        if isinstance(v, str):
-            return [f.strip() for f in v.split(',')]
-        return v
+    def get_frameworks_list(self) -> List[str]:
+        """Get frameworks as a list"""
+        return [f.strip() for f in self.frameworks.split(',')]
     
-    @validator('data_residency_regions', pre=True)
-    def parse_regions(cls, v):
-        if isinstance(v, str):
-            return [r.strip() for r in v.split(',')]
-        return v
+    def get_regions_list(self) -> List[str]:
+        """Get regions as a list"""
+        return [r.strip() for r in self.data_residency_regions.split(',')]
 
 
 class AppSettings(BaseSettings):
