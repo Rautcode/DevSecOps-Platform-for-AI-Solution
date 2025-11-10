@@ -37,7 +37,7 @@ prometheus-client==0.20.0
 structlog==24.1.0
 
 # Production Dependencies
-gunicorn==21.2.0
+gunicorn==23.0.0
 sqlalchemy==2.0.25
 alembic==1.13.1
 redis==5.0.1
